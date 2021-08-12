@@ -1,19 +1,25 @@
-require "rails_helper" 
+require "rails_helper"
 
 RSpec.describe LoansController do
+  let(:valid_attributes) {
+    FactoryBot.build(:loan).attributes
+  }
+
   describe "GET show" do
     it do
+      create(:loan)
       get :show, params: { id: 1 }
       param = JSON.parse(response.body).with_indifferent_access
-      expect(param[:loan][:id]).to(eq(1))
+      expect(param[:data][:id]).to(eq(1))
     end
   end
 
-  describe "POST show" do
+  describe "POST create" do
     it do
-      post :create
+      post :create, :params => { loan: valid_attributes }
       param = JSON.parse(response.body).with_indifferent_access
-      expect(param[:loan][:id]).to(eq(2))
+      expect(param[:data][:id]).to(eq(1))
+      expect(param[:data][:name]).to(eq('My Loan'))
     end
   end
 end
